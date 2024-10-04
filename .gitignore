@@ -13,6 +13,7 @@ yarn-error.log*
 
 # Environnement local
 .env
+src/config/config.ts
 
 # Cache et données temporaires
 *.tsbuildinfo
@@ -30,3 +31,8 @@ build/
 
 # Configurations système
 *.swp
+
+#https keys
+cert.pem
+csr.pem
+key.pem

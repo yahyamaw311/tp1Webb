@@ -2,7 +2,6 @@ import express from 'express';
 import ProductRoutes from "./routes/product.route";
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { config } from './config/config';
 
 const app = express();
 
@@ -17,11 +16,13 @@ const swaggerOptions = {
     },
     servers: [
         {
-            url: 'http://localhost:3000',
+            url: 'https://localhost:3000',
         },
     ],
     apis: ['./routes/*.js']
 };
+
+
 
 const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
@@ -32,6 +33,6 @@ app.use('/v1/', (req, res) => {
     res.send("This is the store api v1")
 });
 
-app.use('/v1/products/', ProductRoutes);
+app.use('/product/', ProductRoutes);
 
 export default app;
