@@ -2,6 +2,7 @@ import app from './app';
 import { config } from './config/config';
 import https from 'https';
 import fs from 'fs';
+import { ProductService } from './services/product.service';
 
 const port = config.port;
 const options = {
@@ -12,3 +13,5 @@ const options = {
 https.createServer(options, app).listen(port, () => {
   console.log(`Serveur HTTPS en écoute sur <https://localhost>:${port}`);
 })
+
+ProductService.generateProductJson();

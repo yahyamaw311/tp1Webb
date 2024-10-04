@@ -10,13 +10,13 @@ export class ProductModel implements Product{
     category?: string;
     quantity: number;
 
-    constructor(title: string, price: number, description: string, quantity:number, category?: string){
+    constructor(title: string, price: number, description: string, quantity:number, id?: number){
         this.title = title;
         this.price = price;
         this.description = description;
         this.quantity = quantity;
 
-        if(category !== undefined) this.category = category;
+        if(id !== undefined) this.id = id;
     }
     
     public getId(): number | undefined{
