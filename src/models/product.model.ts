@@ -3,23 +3,23 @@ import {Product} from '../interfaces/product.interface';
 
 
 export class ProductModel implements Product{
-    id: number;
+    id?: number;
     title: string;
     price: number;
     description: string;
-    category: string;
+    category?: string;
     quantity: number;
 
-    constructor(id: number, title: string, price: number, description: string, category: string, quantity:number){
-        this.id = id;
+    constructor(title: string, price: number, description: string, quantity:number, category?: string){
         this.title = title;
         this.price = price;
         this.description = description;
-        this.category = category;
         this.quantity = quantity;
+
+        if(category !== undefined) this.category = category;
     }
     
-    public getId(): number {
+    public getId(): number | undefined{
         return this.id;
     }
     
@@ -51,7 +51,7 @@ export class ProductModel implements Product{
         this.description = description;
     }
     
-    public getCategory(): string {
+    public getCategory(): string | undefined{
         return this.category;
     }
     

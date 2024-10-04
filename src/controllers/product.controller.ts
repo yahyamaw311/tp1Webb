@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { ProductService } from "../services/product.service";
 import { Product } from "../interfaces/product.interface";
+import { string } from "joi";
+import { ProductModel } from "../models/product.model";
 
 export class ProductController{
     
@@ -22,10 +24,16 @@ export class ProductController{
     }
 
     public async createProduct(req: Request, res: Response): Promise<void>{
-        console.log(req.body.testies);
-        // 1. verifier que tout les elements sont la, sinon retourner 400 or sum
-        // 2 transformer en Product
-        // 3. l<ajouter a la liste
+        const productTitle: string = req.body.productTitle;
+        const productDescription: string = req.body.productDescription;
+        const productPrice: number = req.body.productPrice;
+        const productQuantity: number = req.body.productQuantity;
+
+        let newProduct: ProductModel = new ProductModel(productTitle, productPrice, productDescription, productQuantity);
+    
+        const createdProductResult = await ProductService.createProduct(newProduct);
+        console.log(createdProductResult)
+    
     }
 
 }

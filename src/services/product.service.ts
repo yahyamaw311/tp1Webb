@@ -24,8 +24,11 @@ export class ProductService{
 
     public static async getAllProducts(): Promise<Product[]> {
         const productList = JSON.parse(fs.readFileSync('products.json', 'utf-8'));
-        
         return productList;
+    }
+
+    private static async createJsonFile(path: string, products: Product[]): Promise<void> {
+        fs.writeFileSync(path, JSON.stringify(products, null, 2))
     }
 
     public static async createProduct(product: Product): Promise<number>{
@@ -35,9 +38,17 @@ export class ProductService{
 
         if(!productNameRegex.test(product.title) 
             || !priceRegex.test(String(product.price))
-            || !quantityRegex.test(String(quantityRegex))){
+            || !quantityRegex.test(String(product.quantity))){
                 return 400;
         }
+
+        let productList = await this.getAllProducts().then(
+            res => {
+                res.push(product)
+                this.createJsonFile('products.json', res)
+            }  
+        );
+        
         return 200;
     }
 
