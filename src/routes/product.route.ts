@@ -5,10 +5,10 @@ import Joi from 'joi';
 
 
 
-const ProductRoutes = Router();
+const productRoutes = Router();
 const productController = new ProductController();
 
-ProductRoutes.get('/', productController.generateProductJson);
+productRoutes.get('/', productController.generateProductJson);
 
 
 /**
@@ -34,6 +34,8 @@ ProductRoutes.get('/', productController.generateProductJson);
  *       404:
  *         description: utilisateur non trouvé
  */
-ProductRoutes.get('/products', productController.getAllProducts)
+productRoutes.get('/products', productController.getAllProducts)
 
-export default ProductRoutes;
+productRoutes.post('/product', productController.createProduct)
+
+export default productRoutes;
