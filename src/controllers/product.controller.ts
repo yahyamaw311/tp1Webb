@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { ProductService } from "../services/product.service";
 import { Product } from "../interfaces/product.interface";
-import { string } from "joi";
 import { ProductModel } from "../models/product.model";
 
 export class ProductController{
