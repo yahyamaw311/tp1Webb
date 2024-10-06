@@ -5,7 +5,6 @@ import * as fs from 'fs';
 
 export class ProductService{
 
-    productList: Product[] = [];
     private static path: string = "products.json";
 
     public static async generateProductJson() {

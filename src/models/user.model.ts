@@ -13,4 +13,6 @@ export class UserModel implements User{
         this.username = username;
         this.password = password;
     }
+
+    
 }

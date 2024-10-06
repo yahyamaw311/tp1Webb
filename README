@@ -1,3 +1,5 @@
 1. réparer swagger pour que ca inclue les routes
 2. s'assurer que le json est plein dans getAllProducts
 3. la liste doit se refresh uniquement quand la liste est vide
+4. faire une meilleure validation pour s'assurer qu'aucune case importante est vide lors du post
+5. faire les req.body plus beau quand y a plein de trucs. ex: voir Authentification JWT 
