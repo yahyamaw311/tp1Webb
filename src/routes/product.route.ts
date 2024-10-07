@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { ProductController } from "../controllers/product.controller";
+import {authentificateToken} from "../middlewares/user.middleware"
 
 const productRoutes = Router();
 const productController = new ProductController();
@@ -116,9 +117,7 @@ productRoutes.get('/', productController.getAllProducts)
  *                  type: string
  *                  example: User not allowed to make such requests
  */
-productRoutes.post('/', productController.createProduct)
-
-
+productRoutes.post('/', authentificateToken, productController.createProduct)
 
 /**
  * @swagger
@@ -195,7 +194,7 @@ productRoutes.post('/', productController.createProduct)
  *                   type: string
  *                   example: Product has not been found in the database
  */
-productRoutes.put('/:id', productController.modifyProduct)
+productRoutes.put('/:id', authentificateToken, productController.modifyProduct)
 
 
 
@@ -255,6 +254,6 @@ productRoutes.put('/:id', productController.modifyProduct)
  *                   type: string
  *                   example: Product has not been found in the database
  */
-productRoutes.delete('/:id', productController.deleteProduct)
+productRoutes.delete('/:id' ,authentificateToken, productController.deleteProduct)
 
 export default productRoutes;

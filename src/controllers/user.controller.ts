@@ -29,9 +29,17 @@ export class UserController{
             return;
         }
 
-        const testies = await UserService.loginUser(email, password)
-        console.log(testies)
-        res.status(200).json({key: testies})
+        await UserService.loginUser(email, password).then(
+            token => {
+                if(token){
+                    res.setHeader('authorization', `bearer ${token}`);
+                    res.status(200).json({token: token});
+                    return;
+                }
+                
+                res.status(401).json({message: "Authentification failed"})
+            }
+        )
 
     }
 }

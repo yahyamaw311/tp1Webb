@@ -27,7 +27,7 @@ export class UserService{
             return accessToken;
         }
 
-        return "null";
+        return;
     }
 
     
