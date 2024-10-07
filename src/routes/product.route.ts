@@ -122,7 +122,7 @@ productRoutes.post('/', productController.createProduct)
 
 /**
  * @swagger
- * /products/:id:
+ * /products/{id}:
  *   put:
  *     summary: Modifies a product
  *     description: Modifies a product in the database
@@ -201,7 +201,7 @@ productRoutes.put('/:id', productController.modifyProduct)
 
 /**
  * @swagger
- * /products/:id:
+ * /products/{id}:
  *   delete:
  *     summary: Deletes a product
  *     description: Deletes a product in the database

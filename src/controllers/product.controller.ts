@@ -51,13 +51,15 @@ export class ProductController{
     }
 
     public async modifyProduct(req: Request, res: Response): Promise<void>{
-        const productNameRegex: RegExp = /^[A-Za-z\s]{3,50}$/;
+        const productNameRegex: RegExp = /^[A-Za-z0-9\s]{3,50}$/;
         const priceRegex: RegExp = /^\d+(\.\d+)?$/;
         const quantityRegex: RegExp = /^[1-9]\d*$/;
         const idRegex: RegExp = /^[0-9]+$/;
         if(!idRegex.test(req.params.id) || !productNameRegex.test(req.body.title)
             || !priceRegex.test(req.body.price) || !quantityRegex.test(req.body.quantity)){
             res.status(400).json({ message: "Erreur de donnée"});
+            console.log(idRegex.test(req.params.id))
+            console.log(req.params.id)
             return;
         }
         
@@ -65,7 +67,7 @@ export class ProductController{
         
         await ProductService.modifyProduct(productToModify).then(
             result => {
-                result ? res.status(201).json({ message: "création réussie"}) : res.status(404).json({ message: "l'élément est introuvable"}) 
+                result ? res.status(200).json({ message: "modification réussie"}) : res.status(404).json({ message: "l'élément est introuvable"}) 
             }
         )
         

@@ -1,6 +1,7 @@
-1. réparer swagger pour que ca inclue les routes
 2. s'assurer que le json est plein dans getAllProducts
 3. la liste doit se refresh uniquement quand la liste est vide
 4. faire une meilleure validation pour s'assurer qu'aucune case importante est vide lors du post
 5. faire les req.body plus beau quand y a plein de trucs. ex: voir Authentification JWT
 6. modifier le modifyproduct pour que l'utilisateur choisisse ce qu'il veut modifier a la place de tout mettre
+7. ajouter un error 500 a register
+8. je pense pas que ce soit une bonne idée de mettre la clé dans le res.json vu qu'il y a la clé secrette dedans
