@@ -21,7 +21,7 @@ export class ProductController{
             console.log("erreur fetching data")
             res.status(400).send("error fetching data probably because data set is empty")
         }
-    }
+    } // nom description prix quantite
 
     public async createProduct(req: Request, res: Response): Promise<void>{
         const productTitle: string = req.body.productTitle;
