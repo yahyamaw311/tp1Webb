@@ -19,19 +19,30 @@ export class ProductController{
             res.status(200).json(allProducts);
         }catch(error){
             console.log("erreur fetching data")
-            res.status(400).send("error fetching data probably because data set is empty")
+            res.status(400).json({message: "error fetching data"})
         }
-    } // nom description prix quantite
+    }
 
     public async createProduct(req: Request, res: Response): Promise<void>{
-        const productTitle: string = req.body.productTitle;
-        const productDescription: string = req.body.productDescription;
-        const productPrice: number = req.body.productPrice;
-        const productQuantity: number = req.body.productQuantity;
+        const productNameRegex: RegExp = /^[A-Za-z\s]{3,50}$/;
+        const priceRegex: RegExp = /^\d+(\.\d+)?$/;
+        const quantityRegex: RegExp = /^[1-9]\d*$/;
+
+        const {productTitle, productDescription, productPrice, productQuantity} = req.body;
+        if(!productNameRegex.test(productTitle) 
+            || !priceRegex.test(String(productPrice))
+            || !quantityRegex.test(String(productQuantity))){
+                res.status(400).json({message: "creation failed"});
+                return;
+        }
 
         let newProduct: ProductModel = new ProductModel(productTitle, productPrice, productDescription, productQuantity);
     
-        const createdProductResult = await ProductService.createProduct(newProduct);
+        const createdProductResult = await ProductService.createProduct(newProduct).then(
+            isCreated => {
+                isCreated === true? res.status(201).json({message: "product created", product: newProduct}) : res.status(400).json({message: "creation failed"})
+            }
+        )
         console.log(createdProductResult)
     }
 
@@ -55,17 +66,14 @@ export class ProductController{
         const priceRegex: RegExp = /^\d+(\.\d+)?$/;
         const quantityRegex: RegExp = /^[1-9]\d*$/;
         const idRegex: RegExp = /^[0-9]+$/;
-        if(!idRegex.test(req.params.id) || !productNameRegex.test(req.body.title)
-            || !priceRegex.test(req.body.price) || !quantityRegex.test(req.body.quantity)){
+        const {title, price, description, quantity} = req.body;
+        if(!idRegex.test(req.params.id) || (!productNameRegex.test(title) && title)
+            || (!priceRegex.test(price) && price) || (!quantityRegex.test(quantity) && quantity)){
             res.status(400).json({ message: "Erreur de donnée"});
-            console.log(idRegex.test(req.params.id))
-            console.log(req.params.id)
             return;
         }
         
-        const productToModify : Product = new ProductModel(req.body.title, parseFloat(req.body.price), req.body.description,  parseInt(req.body.quantity),  parseInt(req.params.id))
-        
-        await ProductService.modifyProduct(productToModify).then(
+        await ProductService.modifyProduct(parseInt(req.params.id), title, description, parseFloat(price), parseInt(quantity)).then(
             result => {
                 result ? res.status(200).json({ message: "modification réussie"}) : res.status(404).json({ message: "l'élément est introuvable"}) 
             }

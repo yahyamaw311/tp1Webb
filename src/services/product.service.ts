@@ -31,25 +31,21 @@ export class ProductService{
         fs.writeFileSync(path, JSON.stringify(products, null, 2))
     }
 
-    public static async createProduct(product: Product): Promise<number>{
-        const productNameRegex: RegExp = /^[A-Za-z\s]{3,50}$/;
-        const priceRegex: RegExp = /^\d+(\.\d+)?$/;
-        const quantityRegex: RegExp = /^[1-9]\d*$/;
+    public static async createProduct(product: Product): Promise<boolean>{
 
-        if(!productNameRegex.test(product.title) 
-            || !priceRegex.test(String(product.price))
-            || !quantityRegex.test(String(product.quantity))){
-                return 400;
+        try{
+            await this.getAllProducts().then(
+                res => {
+                    res.push(product)
+                    this.createJsonFile(this.path, res)
+                }  
+            );
+            return true;
+            
+        }catch(error){
+            return false;
         }
-
-        let productList = await this.getAllProducts().then(
-            res => {
-                res.push(product)
-                this.createJsonFile(this.path, res)
-            }  
-        );
         
-        return 200;
     }
 
     public static async deleteProduct(productId: number): Promise<boolean>{
@@ -67,15 +63,21 @@ export class ProductService{
         )
     }
 
-    public static async modifyProduct(productToModify: Product): Promise<boolean>{
-        console.log(productToModify);
+    public static async modifyProduct(id:number, title?: string, description?: string, price?: number, quantity?: number): Promise<boolean>{
 
         return await this.getAllProducts().then(
             productList => {
-                const product = productList.findIndex(p => p.id === productToModify.id)
+                const product = productList.findIndex(p => p.id === id)
                 if(product === -1) return false;
 
-                productList.splice(product, 1, productToModify)
+                productList[product] = {
+                    ...productList[product],
+                    title: title || productList[product].title,
+                    description: description || productList[product].description,
+                    price: price || productList[product].price,
+                    quantity: quantity || productList[product].quantity
+                };   
+
                 this.createJsonFile(this.path, productList);
                 return true;
             }    

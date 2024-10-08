@@ -1,21 +1,35 @@
 import { config } from '../config/config';
 import app from '../app';
-import { NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import { jwtDecode } from 'jwt-decode';
+import { object } from 'joi';
 
 
-export function authentificateToken(req: any, res: any, next: NextFunction){
+export function authentificateToken(req: Request, res: Response, next: NextFunction){
     try {
-        const token = req.headers['authorization']?.split(' ')[1];
-        console.log(token);
-        if (!token) return res.status(403).json({message: "user not authorized"});
+        const token = req.headers['authorization'];
+        if (!token){
+            res.status(403).json({message: "no token detected"});
+            return;
+        }
 
-        jwt.verify(token, config.jwt_secret, (err: any, user: any) => {
-            if (err) return res.status(403).json({message: "user not authorized"});
-            req.user = user;
-            next();
-        });
+        const decoded = jwt.verify(token, config.jwt_secret);
+        req.body.user = decoded;
+        next();
     }catch(error){
-        res.status(500).json({message: "internal error"})
+        res.status(403).json({message: "token invalide"})
     }
+}
+
+export function authorizeRole(roles: string[]) {
+
+    return (req: Request, res: Response, next: NextFunction) => {
+        const userRole = req.body.user?.role;
+        if(!roles.includes(userRole)){
+            res.status(403).json({message: 'Accès interdit.'});
+            return;
+        }
+        next();
+    };
 }

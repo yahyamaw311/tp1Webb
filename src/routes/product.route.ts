@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ProductController } from "../controllers/product.controller";
-import {authentificateToken} from "../middlewares/user.middleware"
+import { authentificateToken, authorizeRole} from "../middlewares/user.middleware"
 
 const productRoutes = Router();
 const productController = new ProductController();
@@ -54,7 +54,7 @@ const productController = new ProductController();
  *                      type: string
  *                      example: erreur interne
  */
-productRoutes.get('/', productController.getAllProducts)
+productRoutes.get('/', authentificateToken, authorizeRole(["gestionnaire", "employee"]), productController.getAllProducts)
 
 
 
@@ -117,7 +117,7 @@ productRoutes.get('/', productController.getAllProducts)
  *                  type: string
  *                  example: User not allowed to make such requests
  */
-productRoutes.post('/', authentificateToken, productController.createProduct)
+productRoutes.post('/', authentificateToken, authorizeRole(["gestionnaire"]), productController.createProduct)
 
 /**
  * @swagger
@@ -194,7 +194,7 @@ productRoutes.post('/', authentificateToken, productController.createProduct)
  *                   type: string
  *                   example: Product has not been found in the database
  */
-productRoutes.put('/:id', authentificateToken, productController.modifyProduct)
+productRoutes.put('/:id', authentificateToken, authorizeRole(["gestionnaire"]), productController.modifyProduct)
 
 
 
@@ -254,6 +254,6 @@ productRoutes.put('/:id', authentificateToken, productController.modifyProduct)
  *                   type: string
  *                   example: Product has not been found in the database
  */
-productRoutes.delete('/:id' ,authentificateToken, productController.deleteProduct)
+productRoutes.delete('/:id' ,authentificateToken, authorizeRole(["gestionnaire"]), productController.deleteProduct)
 
 export default productRoutes;

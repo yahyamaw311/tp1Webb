@@ -2,6 +2,7 @@ import { UserModel } from "../models/user.model";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from "../config/config";
+const pm = require('postman')
 
 
 export class UserService{
@@ -23,9 +24,10 @@ export class UserService{
     public static async loginUser(email: string, password: string){
         const user = this.users.find(u => u.email === email);
         if(user && await bcrypt.compare(password, user.password)){
-            const accessToken = jwt.sign({username: user.username}, String(config.jwt_secret), {expiresIn: '1h'});
+            const accessToken = jwt.sign({username: user.role, role: user.role}, String(config.jwt_secret), {expiresIn: '1h'});
             return accessToken;
         }
+        
 
         return;
     }
