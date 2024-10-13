@@ -30,10 +30,10 @@ export class ProductService{
     public static async getAllProductsFiltered(productFilters: any): Promise<Product[]> {
         return await this.getAllProducts().then(
             productList => {
-                // si il est faux que min price et max price existent et que min price est supérieur à max price
-                // si ! (max price est la)
-                // si l'un des deux n'Existe pas, alors la condition va être fausse et étant donné qu'il y a le "!" alors la condition va être vraie
-                if(!(productFilters.minPrice && productFilters.maxPrice && productFilters.minPrice > productFilters.maxPrice)){
+                // si jamais minPrice et maxPrice sont tous les deux là et que minPrice est plus grand que maxPrice, alors la condition sera vrai
+                // et vu qu'on veut éviter ca, on met un "!" devant pour que la condition finale devienne fausse.
+                // si l'un d'eux est absent, alors la condition sera fausse ce qui va automatiquement donné une condition finale vraie
+                if(! (productFilters.minPrice && productFilters.maxPrice && productFilters.minPrice > productFilters.maxPrice) ){
                     if(productFilters.minPrice){
                         productList = productList.filter(product => product.price >= productFilters.minPrice)
                     }
@@ -43,7 +43,7 @@ export class ProductService{
                 }
 
                 // meme logique ici
-                if(!(productFilters.minQuantity && productFilters.maxQuantity && productFilters.minQuantity > productFilters.maxQuantity)){
+                if(! (productFilters.minQuantity && productFilters.maxQuantity && productFilters.minQuantity > productFilters.maxQuantity) ){
                     if(productFilters.minQuantity){
                         productList = productList.filter(product => product.quantity >= productFilters.minQuantity)
                     }
