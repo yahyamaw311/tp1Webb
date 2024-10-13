@@ -25,7 +25,8 @@ export class UserController{
 
     public static async loginUser(req: Request, res: Response): Promise<void>{
         const {email, password} = req.body;
-        if(email.length * password.length === 0){
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if(email.length * password.length === 0 || !emailRegex.test(email)){
             res.status(400).json({ message: "Données invalides"});
             return;
         }

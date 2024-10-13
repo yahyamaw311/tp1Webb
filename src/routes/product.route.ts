@@ -111,7 +111,7 @@ productRoutes.get('/', authentificateToken, authorizeRole(["gestionnaire", "empl
  *             properties:
  *               productTitle:
  *                 type: string
- *                 example: iphone 16
+ *                 example: iphone
  *               productDescription:
  *                 type: string
  *                 example: A mobile phone made by Apple

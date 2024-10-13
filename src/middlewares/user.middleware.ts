@@ -8,7 +8,7 @@ import { object } from 'joi';
 
 export function authentificateToken(req: Request, res: Response, next: NextFunction){
     try {
-        const token = req.headers['authorization'];
+        const token = req.headers['authorization']?.split(' ')[1];
         if (!token){
             res.status(401).json({message: "no token detected"});
             return;

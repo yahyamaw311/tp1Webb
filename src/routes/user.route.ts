@@ -21,7 +21,7 @@ const userRoutes = Router();
  *             properties:
  *               role:
  *                 type: string
- *                 example: Gestionnaire
+ *                 example: gestionnaire
  *               email:
  *                 type: string
  *                 example: testJohnny@gmail.com
