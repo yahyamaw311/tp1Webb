@@ -6,6 +6,10 @@ export class ProductService{
 
     private static path: string = "products.json";
 
+    private static async createJsonFile(path: string, products: Product[]): Promise<void> {
+        fs.writeFileSync(path, JSON.stringify(products, null, 2))
+    }
+    
     public static async generateProductJson() {
         // ilfaut mettre un await ici
         fetch('https://fakestoreapi.com/products')
@@ -30,9 +34,7 @@ export class ProductService{
     public static async getAllProductsFiltered(productFilters: any): Promise<Product[]> {
         return await this.getAllProducts().then(
             productList => {
-                // si jamais minPrice et maxPrice sont tous les deux là et que minPrice est plus grand que maxPrice, alors la condition sera vrai
-                // et vu qu'on veut éviter ca, on met un "!" devant pour que la condition finale devienne fausse.
-                // si l'un d'eux est absent, alors la condition sera fausse ce qui va automatiquement donné une condition finale vraie
+                // ca rentre dans la boucle tout le temps sauf quand les deux sont là et que minPrice > maxPrice
                 if(! (productFilters.minPrice && productFilters.maxPrice && productFilters.minPrice > productFilters.maxPrice) ){
                     if(productFilters.minPrice){
                         productList = productList.filter(product => product.price >= productFilters.minPrice)
@@ -55,10 +57,6 @@ export class ProductService{
                 return productList;
             }
         )
-    }
-
-    private static async createJsonFile(path: string, products: Product[]): Promise<void> {
-        fs.writeFileSync(path, JSON.stringify(products, null, 2))
     }
 
     public static async createProduct(product: Product): Promise<boolean>{

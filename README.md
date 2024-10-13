@@ -1,4 +1,45 @@
-2. s'assurer que le json est plein dans getAllProducts
-4. faire une meilleure validation pour s'assurer qu'aucune case importante est vide lors du post
-5. faire les req.body plus beau quand y a plein de trucs. ex: voir Authentification JWT
-9. modification ne regarde pas de regex
+# Installation et Lancement de l'API
+
+## Prérequis
+
+- Node.js
+- npm
+
+## Installation
+
+1. Clonez le dépôt :
+    ```bash
+    git clone https://github.com/yahyamaw311/tp1Webb.git
+    ```
+2. Accédez au répertoire du projet :
+    ```bash
+    cd tp1Webb
+    ```
+3. Installez les dépendances :
+    ```bash
+    npm install
+    ```
+
+## Lancement
+
+1. Démarrez le serveur de développement :
+    ```bash
+    npm start
+    ```
+2. L'API sera accessible à l'adresse :
+    ```
+    https://localhost:3000
+    ```
+
+## Tests
+
+Pour exécuter les tests, utilisez Postman :
+
+1. Ouvrez Postman.
+2. Importez la collection de tests Postman fournie dans Léa.
+Assurez-vous que le serveur de développement est en cours d'exécution avant d'exécuter les tests.
+
+
+## Configuration
+
+Assurez-vous de configurer les variables d'environnement nécessaires dans un fichier `.env`.
