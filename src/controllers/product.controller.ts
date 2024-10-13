@@ -14,7 +14,26 @@ export class ProductController{
 
     public async getAllProducts(req: Request, res: Response): Promise<void>{
         try{
-            const allProducts = await ProductService.getAllProducts();
+            const priceRegex: RegExp = /^\d+(\.\d+)?$/;
+            const quantityRegex: RegExp = /^[1-9]\d*$/;
+            const queryFilters: string[] = ['minPrice', 'maxPrice', 'minQuantity', 'maxQuantity'];
+            const [minPrice, maxPrice, minQuantity, maxQuantity] = queryFilters.map(filter => req.query[filter]?.toString());
+            if( (minPrice && !priceRegex.test(minPrice))
+                || (maxPrice && !priceRegex.test(maxPrice))
+                || (minQuantity && !quantityRegex.test(minQuantity))
+                || (maxQuantity && !quantityRegex.test(maxQuantity))){
+                res.status(400).json({ message: "Erreur de donnée dans le filtrage"});
+                return;
+            }
+            
+            const productFilters = {
+                minPrice: minPrice ? parseFloat(minPrice) : null,
+                maxPrice: maxPrice ? parseFloat(maxPrice): null,
+                minQuantity: minQuantity ? parseInt(minQuantity): null,
+                maxQuantity: maxQuantity ? parseInt(maxQuantity): null
+            }
+
+            const allProducts = await ProductService.getAllProductsFiltered(productFilters);
             res.status(200).json(allProducts);
         }catch(error){
             logger.error(`error fetching data for request ${req.method} in url /products${req.url}`);

@@ -1,5 +1,4 @@
 import { Product } from '../interfaces/product.interface';
-import { ProductModel } from '../models/product.model';
 import * as fs from 'fs';
 
 
@@ -26,6 +25,36 @@ export class ProductService{
     public static async getAllProducts(): Promise<Product[]> {
         const productList = JSON.parse(fs.readFileSync(this.path, 'utf-8'));
         return productList;
+    }
+
+    public static async getAllProductsFiltered(productFilters: any): Promise<Product[]> {
+        return await this.getAllProducts().then(
+            productList => {
+                // si il est faux que min price et max price existent et que min price est supérieur à max price
+                // si ! (max price est la)
+                // si l'un des deux n'Existe pas, alors la condition va être fausse et étant donné qu'il y a le "!" alors la condition va être vraie
+                if(!(productFilters.minPrice && productFilters.maxPrice && productFilters.minPrice > productFilters.maxPrice)){
+                    if(productFilters.minPrice){
+                        productList = productList.filter(product => product.price >= productFilters.minPrice)
+                    }
+                    if(productFilters.maxPrice){
+                        productList = productList.filter(product => product.price <= productFilters.maxPrice)
+                    }
+                }
+
+                // meme logique ici
+                if(!(productFilters.minQuantity && productFilters.maxQuantity && productFilters.minQuantity > productFilters.maxQuantity)){
+                    if(productFilters.minQuantity){
+                        productList = productList.filter(product => product.quantity >= productFilters.minQuantity)
+                    }
+                    if(productFilters.maxQuantity){
+                        productList = productList.filter(product => product.quantity <= productFilters.maxQuantity)
+                    }
+                }
+
+                return productList;
+            }
+        )
     }
 
     private static async createJsonFile(path: string, products: Product[]): Promise<void> {
@@ -83,7 +112,11 @@ export class ProductService{
                 return true;
             }    
         )
-    } 
+    }
 
-    
+
+    public static regexTester(){
+        // to do because of redendency in regex testing in other functions
+    }
+
 }

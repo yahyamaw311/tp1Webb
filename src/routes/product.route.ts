@@ -7,6 +7,18 @@ const productController = new ProductController();
 
 //productRoutes.get('/', productController.generateProductJson);
 
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *       description: Enter your access token here
+ * security:
+ *   - bearerAuth: []
+ */
 
 /**
  * @swagger
@@ -15,6 +27,8 @@ const productController = new ProductController();
  *     summary: Retrieve a list of products
  *     description: Retrive a list of products from the API. Can be used to view all the products currently availible
  *     tags: [product]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: A list of products.
@@ -52,7 +66,27 @@ const productController = new ProductController();
  *                properties:
  *                  message:
  *                      type: string
- *                      example: erreur interne
+ *                      example: erreur de donnée, probablement dans le filtrage
+ *       401:
+ *          description: utilisateur non autorisé
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                      type: string
+ *                      example: utilisateur non autorisé à effectuer de telles requêtes
+ *       500:
+ *          description: erreur dinterne
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  message:
+ *                      type: string
+ *                      example: erreur internes, veuillez réessayer plus tard
  */
 productRoutes.get('/', authentificateToken, authorizeRole(["gestionnaire", "employee"]), productController.getAllProducts)
 
@@ -66,6 +100,8 @@ productRoutes.get('/', authentificateToken, authorizeRole(["gestionnaire", "empl
  *     summary: Creates a product
  *     description: Creates a product and sends it to the database
  *     tags: [product]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -73,16 +109,16 @@ productRoutes.get('/', authentificateToken, authorizeRole(["gestionnaire", "empl
  *           schema:
  *             type: object
  *             properties:
- *               title:
+ *               productTitle:
  *                 type: string
  *                 example: iphone 16
- *               description:
+ *               productDescription:
  *                 type: string
  *                 example: A mobile phone made by Apple
- *               price:
+ *               productPrice:
  *                 type: float
  *                 example: 899.99
- *               quantity:
+ *               productQuantity:
  *                 type: integer
  *                 example: 29
  *     responses:
@@ -126,6 +162,8 @@ productRoutes.post('/', authentificateToken, authorizeRole(["gestionnaire"]), pr
  *     summary: Modifies a product
  *     description: Modifies a product in the database
  *     tags: [product]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -205,6 +243,8 @@ productRoutes.put('/:id', authentificateToken, authorizeRole(["gestionnaire"]), 
  *     summary: Deletes a product
  *     description: Deletes a product in the database
  *     tags: [product]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id

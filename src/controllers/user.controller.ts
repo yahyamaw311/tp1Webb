@@ -16,7 +16,7 @@ export class UserController{
 
         await UserService.registerUser(user).then(
             result => {
-                result ? res.status(200).json({message: "user créé"}) :
+                result ? res.status(201).json({message: "user créé"}) :
                     res.status(500).json({message: "Erreur dans l'inscription"});
             } 
         )
