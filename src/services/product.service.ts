@@ -8,6 +8,7 @@ export class ProductService{
     private static path: string = "products.json";
 
     public static async generateProductJson() {
+        // ilfaut mettre un await ici
         fetch('https://fakestoreapi.com/products')
             .then(res=>res.json())
             .then(json => {

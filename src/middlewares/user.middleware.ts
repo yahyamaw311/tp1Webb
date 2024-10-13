@@ -10,7 +10,7 @@ export function authentificateToken(req: Request, res: Response, next: NextFunct
     try {
         const token = req.headers['authorization'];
         if (!token){
-            res.status(403).json({message: "no token detected"});
+            res.status(401).json({message: "no token detected"});
             return;
         }
 
@@ -18,12 +18,11 @@ export function authentificateToken(req: Request, res: Response, next: NextFunct
         req.body.user = decoded;
         next();
     }catch(error){
-        res.status(403).json({message: "token invalide"})
+        res.status(401).json({message: "token invalide"})
     }
 }
 
 export function authorizeRole(roles: string[]) {
-
     return (req: Request, res: Response, next: NextFunction) => {
         const userRole = req.body.user?.role;
         if(!roles.includes(userRole)){

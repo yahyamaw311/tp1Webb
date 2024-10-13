@@ -22,6 +22,7 @@ export class UserController{
         )
     }
 
+
     public static async loginUser(req: Request, res: Response): Promise<void>{
         const {email, password} = req.body;
         if(email.length * password.length === 0){

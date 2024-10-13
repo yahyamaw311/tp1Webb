@@ -11,7 +11,7 @@ const options = {
 }
 
 https.createServer(options, app).listen(port, () => {
+  ProductService.generateProductJson();
   console.log(`Serveur HTTPS en écoute sur <https://localhost>:${port}`);
 })
 
-ProductService.generateProductJson();
